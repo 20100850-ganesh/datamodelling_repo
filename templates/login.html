@@ -21,30 +21,37 @@
             <h3>ProtoR</h3>
             <nav>
                 <ul>
-                    <li><a href="base.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="signup.html">SignUp</a></li>
-                    <li><a href="login.html">Login</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/signup">SignUp</a></li>
+                    <li><a href="/login">Login</a></li>
                 </ul>
             </nav>
 
             <div class="form-box">
                 <h1>Log In</h1>
-                <form action="">
+                <form action="/login_validate" method="post">
                     <div class="input-group login">
                         <div class="input-field">
                             <i class="material-icons">mail</i>
-                            <input type="email" name="" id="" placeholder="E-mail">
+                            <input type="email" name="l-email" id="" placeholder="E-mail">
                         </div>
                         <div class="input-field">
                             <i class="material-icons">lock</i>
-                            <input type="password" name="" id="" placeholder="Password">
+                            <input type="password" name="l-password" id="" placeholder="Password">
                         </div>
                         <p>Lost Password? <a href="#">Click Here!</a></p>
+                        {% if msg %}
+
+                        {% for message in msg %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
+
+                        {% endif %}
                     </div>
                     <div class="btn-field">
-                        <button type="button">Log In</button>
+                        <button type="submit">Log In</button>
                     </div>
                 </form>
             </div>

@@ -22,10 +22,10 @@
             <h3>ProtoR</h3>
             <nav>
                 <ul>
-                    <li><a href="base.html">Home</a></li>
-                    <li><a href="predictions.html">Predictions</a></li>
-                    <li><a href="user.html">View/Edit Profile</a></li>
-                    <li><a href="login.html">Log Out</a></li>
+                    <!-- <li><a href="/">Home</a></li> -->
+                    <li><a href="/predictions">Predictions</a></li>
+                    <li><a href="/user">View/Edit Profile</a></li>
+                    <li><a href="/logout">Log Out</a></li>
                 </ul>
             </nav>
         </div>
@@ -33,29 +33,29 @@
         <div class="row">
             <div class="col">
                 <div class="form-box">
-                    <h1>Welcome to User Page</h1>
+                    <h1>Welcome, {{name}}</h1>
                     <h2>Profile Information</h2>
                     <form action="">
                         <div class="input-group">
                             <div class="input-field">
                                 <i class="material-icons">person</i>
                                 <input placeholder="Name" disabled>
-                                <input type="text" id="name" name="name" value="John Doe" disabled>
+                                <input type="text" id="name" name="name" value="{{ session['name'] }}" disabled>
                             </div>
                             <div class="input-field">
                                 <i class="material-icons">mail</i>
                                 <input placeholder="E-mail" disabled>
-                                <input type="email" id="email" name="email" value="johndoe@example.com" disabled>
+                                <input type="email" id="email" name="email" value="{{ session['email'] }}" disabled>
                             </div>
                             <div class="input-field">
                                 <i class="material-icons">lock</i>
                                 <input placeholder="Password" disabled>
-                                <input type="password" id="password" name="password" value="********" disabled>
+                                <input type="password" id="password" name="password" value="{{ '*' * pwd }}" disabled>
                             </div>
                         </div>
                         <div class="btn-field">
-                            <button type="button">Edit Profile</button>
-                            <button type="button" class="disable">Save Profile</button>
+                            <button type="button" id="edit-btn">Edit Profile</button>
+                            <button type="button" id="save-btn" class="disable">Save Profile</button>
                         </div>
                     </form>
                 </div>
@@ -64,6 +64,39 @@
         </div>
     </div>
 
+
+    <script>
+        document.getElementById("edit-btn").addEventListener("click", function () {
+            document.querySelectorAll("input[disabled]").forEach(function (input) {
+                input.removeAttribute("disabled");
+            });
+            document.getElementById("edit-btn").classList.add("disable");
+            document.getElementById("save-btn").classList.remove("disable");
+        });
+    </script>
+    <script>
+        document.getElementById("save-btn").addEventListener("click", function () {
+            // Get the form data
+            var formData = new FormData(document.querySelector("form"));
+
+            // Send an AJAX request to update the user data
+            fetch("/update_profile", {
+                method: "POST",
+                body: formData
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        alert("Profile updated successfully!");
+                        location.reload();
+                    } else {
+                        alert("Failed to update profile!");
+                    }
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        });
+    </script>
 </body>
 
 </html>

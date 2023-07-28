@@ -22,10 +22,10 @@
             <h3>ProtoR</h3>
             <nav>
                 <ul>
-                    <li><a href="base.html">Home</a></li>
-                    <li><a href="predictions.html">Predictions</a></li>
-                    <li><a href="user.html">View/Edit Profile</a></li>
-                    <li><a href="login.html">Log Out</a></li>
+                    <!-- <li><a href="base.html">Home</a></li> -->
+                    <li><a href="/predictions">Predictions</a></li>
+                    <li><a href="/user">View/Edit Profile</a></li>
+                    <li><a href="/logout">Log Out</a></li>
                 </ul>
             </nav>
         </div>
@@ -34,16 +34,89 @@
             <div class="col">
                 <h1>Upload Images for Prediction</h1>
                 <section class="upload">
-                    <form id="upload-form">
+                    <label for="model" class="label">Select a model:</label>
+                    <select id="model" name="model" class="label-t">
+                        <option value="DenseNet" class="label-t">DenseNet</option>
+                        <option value="MobileNet" class="label-t">MobileNet</option>
+                    </select>
+                    <form id="upload-form" enctype="multipart/form-data">
                         <label for="image" class="label">Select an image to upload:</label>
                         <input type="file" id="image" name="image" accept="image/*" class="label">
-                        <button type="button" class="label-btn">Predict</button>
+                        <button type="submit" class="label-btn">Predict</button>
+                        <br>
+                        <div class="spinner">
+                            <div class="text">Predicting... Please wait!</div>
+                            <div class="dots">
+                                <div class="dot1"></div>
+                                <div class="dot2"></div>
+                            </div>
+                        </div>
+                        <br>
                     </form>
                 </section>
+                <br>
+            </div>
+            <div class="col">
+                <div class="msg">
+                    <p id="message"></p>
+                </div>
             </div>
 
         </div>
     </div>
+
+    <script>
+        const form = document.getElementById('upload-form');
+        const imageInput = document.getElementById('image');
+        const modelSelect = document.getElementById('model');
+        const message = document.getElementById('message');
+        const spinner = document.querySelector('.spinner');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData();
+            formData.append('image', imageInput.files[0]);
+            formData.append('model', modelSelect.value);
+
+            // Show the loading spinner
+            spinner.style.display = 'block';
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((prediction) => {
+                    console.log('Prediction:', prediction);
+
+                    // Make a GET request to retrieve disease information and control methods
+                    fetch(`/disease/${prediction.result}`)
+                        .then((response) => response.json())
+                        .then((disease) => {
+                            console.log('Disease:', disease);
+
+                            // Display the disease information and its control methods in a message
+                            message.innerText = `Your Rice Plant is suffering from ${disease.name}\n ${disease.info}\n Control methods:\n${disease.control_methods.join("\n")}`;
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        })
+                        .finally(() => {
+                            // Hide the loading spinner
+                            spinner.style.display = 'none';
+                        });
+                })
+                .catch((error) => {
+                    console.error(error);
+                    // Hide the loading spinner
+                    spinner.style.display = 'none';
+                });
+        });
+
+        // Hide the spinner on page load
+        spinner.style.display = 'none';
+    </script>
+
 
 </body>
 
