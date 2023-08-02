@@ -1,12 +1,18 @@
 from flask import Flask, render_template, redirect, request, session, url_for, flash, get_flashed_messages, jsonify
 from db import return_query, commit_query
 import os
+from dotenv import load_dotenv
 from predict import predict
 from diseasecontroller import get_disease_info
 import logging
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+load_dotenv()
 
 
 @app.route('/')
@@ -109,6 +115,30 @@ def signup_validate():
     return redirect('/login')
 
 
+@app.route('/sendmsg', methods=['POST'])
+def sendmsg():
+    name = request.form.get('mname')
+    phone = request.form.get('mphone')
+    email = request.form.get('memail')
+    subject = request.form.get('msubject')
+    message = request.form.get('mmessage')
+    sender_email = os.environ.get('EMAIL_ADDRESS')
+    sender_password = os.environ.get('EMAIL_PASSWORD')
+
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = sender_email
+    msg['Subject'] = subject
+    body = f"Name: {name}\nPhone: {phone}\nEmail: {email}\n\nMessage:\n{message}"
+    msg.attach(MIMEText(body, 'plain'))
+
+    with smtplib.SMTP('smtp.gmail.com', 587) as server:
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, sender_email, msg.as_string())
+    return redirect('/')
+
+
 @app.route('/update_profile', methods=['POST'])
 def update_profile():
     name = request.form.get('name')
@@ -119,6 +149,26 @@ def update_profile():
     values = (name, email, password, session['email'])
     commit_query(sql, values)
     return 'Profile updated successfully!'
+
+
+@app.route('/fungal')
+def fungal():
+    return render_template('fungal.html')
+
+
+@app.route('/bacterial')
+def bacterial():
+    return render_template('bacterial.html')
+
+
+@app.route('/viral')
+def viral():
+    return render_template('viral.html')
+
+
+@app.route('/background')
+def background():
+    return render_template('background.html')
 
 
 if __name__ == '__main__':

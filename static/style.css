@@ -78,11 +78,11 @@ p {
 }
 
 .msg {
-    color: #fff;
+    color: #ffffff;
     font-size: 20px;
     line-height: 22px;
     text-align: center;
-    background-color: #000;
+    background-color: #483030;
 }
 
 .card {
@@ -135,7 +135,7 @@ h3 {
 
 .card p {
     text-shadow: 0 0 15px #000;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .aboutimg {
@@ -412,5 +412,111 @@ form p a {
 
     50% {
         transform: scale(1.0);
+    }
+}
+
+/* Media Queries for Mobile Devices */
+
+@media only screen and (max-width: 768px) {
+    .container {
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    .navbar {
+        height: 15%;
+    }
+
+    nav ul li {
+        margin-left: 30px;
+    }
+
+    .row {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .col {
+        flex-basis: 100%;
+        margin-bottom: 30px;
+    }
+
+    h1 {
+        font-size: 45px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .btn {
+        width: 150px;
+        font-size: 10px;
+        padding: 10px 0;
+    }
+
+    .card {
+        width: 150px;
+        height: 200px;
+        padding: 10px 15px;
+        margin: 10px auto;
+    }
+
+    h5 {
+        font-size: 14px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    .acol img {
+        max-height: 300px;
+    }
+
+    .contact-left {
+        padding: 10px;
+    }
+
+    .contact-right {
+        padding: 10px;
+    }
+
+    .contact-right tr td {
+        padding-top: 20px;
+    }
+
+    .form-box {
+        width: 100%;
+        max-width: 350px;
+        padding: 30px 40px 50px;
+    }
+
+    .form-box h1 {
+        font-size: 25px;
+        margin-bottom: 40px;
+    }
+
+    input {
+        padding: 15px 10px;
+    }
+
+    .input-field {
+        margin: 10px 0;
+    }
+
+    .input-field i {
+        margin-left: 10px;
+    }
+
+    form p {
+        font-size: 14px;
+    }
+
+    .label-btn {
+        width: 90px;
+        font-size: 14px;
+        margin-top: 15px;
     }
 }

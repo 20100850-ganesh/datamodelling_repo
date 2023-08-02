@@ -95,8 +95,13 @@
                         .then((disease) => {
                             console.log('Disease:', disease);
 
-                            // Display the disease information and its control methods in a message
-                            message.innerText = `Your Rice Plant is suffering from ${disease.name}\n ${disease.info}\n Control methods:\n${disease.control_methods.join("\n")}`;
+                            if (disease.name === 'healthy_rice_plant') {
+                                // If the plant is healthy, display the message directly
+                                message.innerText = 'Your Rice Plant is healthy!';
+                            } else {
+                                // If the plant is not healthy, display the disease information and control methods
+                                message.innerText = `Your Rice Plant is suffering from ${disease.name}\n ${disease.info}\n Control methods:\n${disease.control_methods}`;
+                            }
                         })
                         .catch((error) => {
                             console.error(error);

@@ -25,7 +25,7 @@ class_name_to_db_name = {
 
 def get_disease_info(name):
     if name == 'healthy_rice_plant':
-        return {'message': 'Your rice plant is healthy!'}, 200
+        return {'name': 'healthy_rice_plant', 'info': 'Your rice plant is healthy!', 'control_methods': []}, 200
 
     db_name = class_name_to_db_name.get(name)
     if not db_name:
@@ -51,7 +51,7 @@ def get_disease_info(name):
     control_methods = [method for method, in cursor]
 
     disease_info = {
-        'name': db_name,
+        'name': db_name if db_name else 'healthy_rice_plant',
         'info': disease_description,
         'control_methods': control_methods
     }
