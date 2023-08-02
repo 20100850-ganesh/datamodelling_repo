@@ -124,6 +124,7 @@ def sendmsg():
     message = request.form.get('mmessage')
     sender_email = os.environ.get('EMAIL_ADDRESS')
     sender_password = os.environ.get('EMAIL_PASSWORD')
+    receiver_email = os.environ.get('SENDER_EMAIL')
 
     msg = MIMEMultipart()
     msg['From'] = sender_email
@@ -135,7 +136,7 @@ def sendmsg():
     with smtplib.SMTP('smtp.gmail.com', 587) as server:
         server.starttls()
         server.login(sender_email, sender_password)
-        server.sendmail(sender_email, sender_email, msg.as_string())
+        server.sendmail(sender_email, receiver_email, msg.as_string())
     return redirect('/')
 
 
